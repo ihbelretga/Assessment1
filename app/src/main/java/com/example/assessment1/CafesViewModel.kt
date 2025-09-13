@@ -10,10 +10,6 @@ class CafesViewModel {
     private val _cafes = MutableLiveData<List<Cafe>>(emptyList())
     val cafes: LiveData<List<Cafe>> = _cafes
 
-    init {
-        // add the 10 existing cafes here
-    }
-
     fun favourite(position: Int) {
         _cafes.value = _cafes.value?.mapIndexed { index, cafe ->
             if (index == position) cafe.copy(isFavourited = !cafe.isFavourited)

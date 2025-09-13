@@ -1,6 +1,7 @@
 package com.example.assessment1
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,13 @@ class CafeAdapter (
                 Toast.makeText(holder.itemView.context, "${cafe.title} removed from favourites", Toast.LENGTH_SHORT).show()
             }
 
+        }
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, CafeDetailsActivity::class.java)
+            intent.putExtra("cafeIndex", position)
+            context.startActivity(intent)
         }
 
 
