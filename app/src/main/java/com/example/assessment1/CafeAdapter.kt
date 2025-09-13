@@ -44,17 +44,6 @@ class CafeAdapter (
 
         holder.favouriteBtn.setOnClickListener {
             vm.toggleFavourite(cafe)
-
-            holder.favouriteBtn.setImageResource(
-                if (cafe.isFavourited) R.drawable.filled_heart else R.drawable.empty_heart
-            )
-            if (cafe.isFavourited) {
-                Toast.makeText(holder.itemView.context, "${cafe.title} added to favourites", Toast.LENGTH_SHORT).show()
-            }
-            else {
-                Toast.makeText(holder.itemView.context, "${cafe.title} removed from favourites", Toast.LENGTH_SHORT).show()
-            }
-
         }
 
         holder.itemView.setOnClickListener {
