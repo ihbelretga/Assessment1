@@ -47,7 +47,7 @@
 
     </LinearLayout>
     <ToggleButton
-        android:id="@+id/favouriteBtn"
+        android:id="@+id/detailFavouriteBtn"
         android:textColor="#3B3B3B"
         android:textStyle="bold"
         android:textOn="❤︎"
