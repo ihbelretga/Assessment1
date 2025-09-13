@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.fragment.app.activityViewModels
 
 class CafeAdapter (
-    private val cafes: List<Cafe>,
-    private val context: Context
+    private val cafes: MutableList<Cafe>,
+    private val vm : CafesViewModel
 ) : RecyclerView.Adapter<CafeAdapter.CafeViewHolder>() {
 
     class CafeViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -24,7 +24,7 @@ class CafeAdapter (
         val category: TextView = view.findViewById(R.id.cafeCategory)
         val image: ImageView = view.findViewById(R.id.cafeImage)
 
-        val favouriteBtn: ToggleButton = view.findViewById(R.id.favouriteBtn)
+        val favouriteBtn: ImageButton = view.findViewById(R.id.favouriteBtn)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CafeViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -38,13 +38,17 @@ class CafeAdapter (
         holder.category.text = cafe.category
         holder.image.setImageResource(cafe.imageID)
 
-        holder.favouriteBtn.setOnCheckedChangeListener(null)
-        holder.favouriteBtn.isChecked = cafe.isFavourited
+        holder.favouriteBtn.setImageResource(
+            if (cafe.isFavourited) R.drawable.filled_heart else R.drawable.empty_heart
+        )
 
-        holder.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
-            cafe.isFavourited = isChecked
+        holder.favouriteBtn.setOnClickListener {
+            vm.toggleFavourite(cafe)
 
-            if (isChecked) {
+            holder.favouriteBtn.setImageResource(
+                if (cafe.isFavourited) R.drawable.filled_heart else R.drawable.empty_heart
+            )
+            if (cafe.isFavourited) {
                 Toast.makeText(holder.itemView.context, "${cafe.title} added to favourites", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -56,7 +60,7 @@ class CafeAdapter (
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, CafeDetailsActivity::class.java)
-            intent.putExtra("cafeIndex", position)
+            intent.putExtra("cafe", cafe)
             context.startActivity(intent)
         }
 
@@ -64,4 +68,10 @@ class CafeAdapter (
     }
 
     override fun getItemCount(): Int = cafes.size
+
+    fun updateList(newCafes: List<Cafe>) {
+        cafes.clear()
+        cafes.addAll(newCafes)
+        notifyDataSetChanged()
+    }
 }

@@ -7,18 +7,16 @@ import kotlin.collections.orEmpty
 import kotlin.collections.plus
 
 class CafesViewModel {
-    private val _cafes = MutableLiveData<List<Cafe>>(emptyList())
-    val cafes: LiveData<List<Cafe>> = _cafes
+    private val _cafes = MutableLiveData<List<Cafe>>(
+listOf(
+            Cafe("Example cafe title", "Some kinda description", "Northbridge", android.R.color.darker_gray),
+            Cafe("Example cafe 2 title", "Some kinda description", "Fremantle", android.R.color.darker_gray)
+        )
+    )
+    val cafes: LiveData<List<Cafe>> get() = _cafes
 
-    fun favourite(position: Int) {
-        _cafes.value = _cafes.value?.mapIndexed { index, cafe ->
-            if (index == position) cafe.copy(isFavourited = !cafe.isFavourited)
-            else cafe
-        }
-    }
-
-    // for adding cafes later
-    fun add(cafe: Cafe) {
-        _cafes.value =_cafes.value.orEmpty() + cafe
+    fun toggleFavourite(cafe: Cafe) {
+        cafe.isFavourited = !cafe.isFavourited
+        _cafes.value = _cafes.value.orEmpty()
     }
 }
