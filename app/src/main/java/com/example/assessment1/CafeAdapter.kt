@@ -18,6 +18,8 @@ class CafeAdapter (
     private val vm : CafesViewModel
 ) : RecyclerView.Adapter<CafeAdapter.CafeViewHolder>() {
 
+    private var fullList: List<Cafe> = ArrayList(cafes)
+
     class CafeViewHolder(view: View) : RecyclerView.ViewHolder(view)
     {
         val title: TextView = view.findViewById(R.id.cafeTitle)
@@ -61,6 +63,19 @@ class CafeAdapter (
     fun updateList(newCafes: List<Cafe>) {
         cafes.clear()
         cafes.addAll(newCafes)
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        cafes = if (query.isEmpty()) {
+            fullList.toMutableList()
+        } else {
+            fullList.filter {
+                it.title.contains(query, ignoreCase = true) ||
+                it.category.contains(query, ignoreCase = true) ||
+                it.description.contains(query, ignoreCase = true)
+            }.toMutableList()
+        }
         notifyDataSetChanged()
     }
 }
