@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.activityViewModels
 
 class CafeAdapter (
     private val cafes: List<Cafe>,
@@ -37,9 +38,11 @@ class CafeAdapter (
         holder.image.setImageResource(cafe.imageID)
 
         holder.favouriteBtn.setOnCheckedChangeListener(null)
-        holder.favouriteBtn.isChecked = false
+        holder.favouriteBtn.isChecked = cafe.isFavourited
 
         holder.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
+            cafe.isFavourited = isChecked
+
             if (isChecked) {
                 Toast.makeText(holder.itemView.context, "${cafe.title} added to favourites", Toast.LENGTH_SHORT).show()
             }
