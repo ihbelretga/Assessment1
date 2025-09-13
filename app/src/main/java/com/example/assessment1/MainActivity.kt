@@ -36,5 +36,17 @@ class MainActivity : AppCompatActivity() {
         vm.cafes.observe(this) { cafes ->
             adapter.updateList(cafes)
         }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter(query.orEmpty())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter(newText.orEmpty())
+                return true
+            }
+        })
     }
 }
